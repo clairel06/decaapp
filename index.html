@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#stage {
+  position:relative;
+  margin:auto;
+  background-size: cover;
+}
+#btn {
+  position:absolute;
+  height:auto;
+  transform: rotate(-5deg);
+}
+#btn:hover {
+  transform: scale(1.2);
+}
+.dot {
+  position:absolute;
+  transition: transform 0.25s;
+  height:auto;
+}
+#float {
+  position:absolute;
+  z-index:2;
+  pointer-events:none;
+  text-align: center;
+  transform: scale(0);
+  transition: transform 0.6s;
+  border-radius:50%;
+  background:green;
+}
+#float.circle {
+  transform: scale(1);
+}
+#shadow {
+  pointer-events:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:black;
+  transition: all 0.6s;
+  opacity: 0;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script> 
+
+$(init);
+let t1=0;
+let t2=0;
+let s=0;
+
+function dout() { clearTimeout(t1); clearTimeout(t2); $(this).css('transform', 'rotate(0deg)'); $("#float").removeClass('circle'); $('#shadow').css('opacity', 0)}
+
+function din() {
+  let e=$(this);
+  $("#float").css('left',e.position().left-435*s+'px').css('top',e.position().top-425*s+'px')
+    .attr('src','d/'+(Number(e.attr('id').substring(1))%20+1)+'.png');
+  e.css('transform', 'rotate(17deg)');
+  t1 = setTimeout(()=>e.css('transform', 'rotate(-17deg)'), 250);
+  if (stage) t2 = setTimeout(()=>{$('#shadow').css('opacity', 0.5); $("#float").addClass('circle')}, 500); 
+  else t2 = null;
+}
+
+function init() {
+  arr= [[1180,1002], [80,34], [124,240], [252,90], [282,256], [394,148], [526,34], [654,168], [782,94], [964,62], [1108,100], [1314,56], [1500,100], [1630,42], [1748,182], [1836,54], [1904,208], [2042,126], [2212,36], [2218,190], [2050,274], [2222,314], [2212,452], [2040,446], [2190,612], [2038,662], [2210,753], [2106,873], [2206,952], [2195,1112], [2057,1107], [2176,1291], [2029,1261], [2148,1453], [2005,1415], [1880,1159], [1820,1299], [1843,1463], [1630,1442], [1457,1470], [1336,1329], [1208,1451], [1005,1438], [809,1319], [741,1478], [547,1489], [583,1321], [412,1212], [387,1359], [361,1504], [212,1410], [69,1455], [77,1312], [271,1235], [297,1061], [103,1124], [64,932], [210,864], [73,719], [193,606], [52,523], [180,399], [361,357], [508,261]];
+
+  $("#stage").html("<img id=float><img src=a1.png id=btn>").css('background-image', 'url(b0.jpg)');
+  stage=0;
+  scale();
+  for (let i=1; i<arr.length; i++) {
+    let v=arr[i];
+    $("#stage").append("<img class=dot id=d"+i+" src="+((i+1)%48+1)+".png>");
+    $("#stage img:last").width(130*s).css('left',v[0]*s+'px').css('top',v[1]*s+'px').hover(din, dout);
+  }
+  $("#btn").off('click').click(anim1);
+}
+
+function anim1() {
+  arr= [[1052,1040], [580,504], [750,382], [694,518], [838,518], [878,404], [966,274], [1002,400], [1224,454], [1226,306], [1340,364], [1432,452], [1472,356], [1570,464], [1338,526], [1452,578], [1694,584], [1568,590], [1768,696], [1366,658], [1646,722], [1516,732], [1396,778], [1496,872], [1884,832], [1754,836], [1634,849], [1833,941], [1980,986], [1892,1076], [2046,1116], [1786,1152], [1734,1012], [1646,1116], [1602,990], [1522,1116], [1452,998], [1280,1192], [1382,1134], [1170,1256], [1012,1256], [920,1198], [780,1132], [636,1114], [496,1118], [340,1108], [218,1038], [308,936], [416,998], [534,994], [618,858], [664,986], [778,878], [468,860], [358,810], [696,778], [836,756], [544,742], [424,698], [760,646], [642,644], [896,618], [516,598], [980,528]],
+
+  stage=1;
+  redraw();
+  $("#stage").css('background-image', 'url(b1.jpg)');
+  $("#btn").off('click').click(init);
+}
+
+function scale() {
+  let w=$(window).width()*0.85;
+  let h=$(window).height()*0.85;
+  if (w/h>236/164) w=h*236/164;
+  else h=w*164/236;
+  $('#stage').width(w).height(h);
+  s=w/2360;
+  let v=arr[0];
+  $("#btn").width(240*s).css('left', v[0]*s+'px').css('top', v[1]*s+'px');
+  $("#float").width(1000*s).height(1000*s);
+  $("#stage").css('top', 50*s+'px');
+}
+
+function redraw() {
+  scale();
+  for (let i=1; i<arr.length; i++) {
+    let v=arr[i];
+    $("#d"+i).width(130*s).animate({left: (v[0]-20)*s+'px', top:(v[1]-30)*s+'px'}, 1000);
+  }
+}
+
+</script> 
+</head>
+<body style="background:#071840" onresize="redraw()">
+
+<div id=stage><img id=float><img src=a1.png id=btn></div>
+<div id=shadow></div>
+</body>
+</html>
