@@ -5,14 +5,13 @@
 #stage {
   position:relative;
   margin:auto;
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center center;
   overflow-x: visible;
   overflow-y: clip;
 }
 #btn {
   position:absolute;
-  height:auto;
   transform: rotate(-5deg);
 }
 #btn:hover {
@@ -96,7 +95,7 @@ function anim1() {
 
 function anim2() {
   arr=[[1152,1230]]
-  $('#shadow').css('opacity', 0);
+  clearTimeout(t1); clearTimeout(t2); $('#shadow').css('opacity', 0);
   $("#stage").html("<img src=a0.png id=btn>").css('background-image', 'url(b2.jpg)');
   stage=2;
   scale();
@@ -114,7 +113,7 @@ function scale() {
   $('#stage').width(w).height(h);
   sx=w/2360; sy=h/1640;
   let v=arr[0];
-  $("#btn").width(240*sx).css('left', v[0]*sx+'px').css('top', v[1]*sy+'px');
+  $("#btn").width(236*sx).height(164*sy).css('left', v[0]*sx+'px').css('top', v[1]*sy+'px');
   $("#float").width(1000*sx).height(1000*sy);
 }
 
